@@ -1,0 +1,29 @@
+buildscript {
+    // 自定义  Thymeleaf 和 Thymeleaf Layout Dialect 的版本
+    ext['thymeleaf.version'] = '3.0.3.RELEASE'
+    ext['thymeleaf-layout-dialect.version'] = '2.2.0'
+}
+plugins {
+    id 'org.springframework.boot' version '2.1.11.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'com.dirk.fs'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+
+repositories {
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //DevTools  启动热部署
+    implementation 'org.springframework.boot:spring-boot-devtools'
+}
