@@ -1,4 +1,4 @@
-package com.dirk.fs.html_fs.utils;
+package com.dirk.fs.html_fs;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -6,28 +6,31 @@ import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author Ranger
- * @create 2019-12-15 11:52
+ * @create 2019-12-15 16:17
  */
-public class FileUtils {
-    /**
-     * 输入流转为File
-     * @param is
-     * @param file
-     * @throws IOException
-     */
-    public static void inputStreamToFile(InputStream is,File file) throws IOException {
-        OutputStream os = new FileOutputStream(file);
-        int len;
-        byte[] b = new byte[2048];
-        while ((len=is.read(b))!=-1){
-            os.write(b, 0,len );
+public class FtpTest {
+    public static void main(String[] args){
+        try {
+            System.out.println("FtpTest.main");
+            InputStream is = new FileInputStream(new File("d:\\zf\\m.txt"));
+            boolean b = uploadFile("39.107.249.220",
+                    21,
+                    "html_fs",
+                    "html_fs_pwd",
+                    "/home/html_fs",
+                    "/html",
+                    "m.txt",
+                    is);
+            System.out.println("b = " + b);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -43,20 +46,18 @@ public class FileUtils {
      * @param input 输入流
      * @return 成功返回true，否则返回false
      */
-    public static boolean uploadFile(String host,
-                                     int port,
-                                     String username,
-                                     String password,
-                                     String basePath,
-                                     String filePath,
-                                     String filename,
-                                     InputStream input) {
+    public static boolean uploadFile(String host, int port, String username, String password, String basePath,
+                                     String filePath, String filename, InputStream input) {
         boolean result = false;
         FTPClient ftp = new FTPClient();
         try {
-            ftp.connect(host, port);
-            ftp.login(username, password);
-            if(!FTPReply.isPositiveCompletion(ftp.getReplyCode())){
+            int reply;
+            ftp.connect(host, port);// 连接FTP服务器
+            // 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
+            ftp.login(username, password);// 登录
+            reply = ftp.getReplyCode();
+            System.out.println("reply = " + reply);
+            if (!FTPReply.isPositiveCompletion(reply)) {
                 ftp.disconnect();
                 return result;
             }
@@ -73,10 +74,6 @@ public class FileUtils {
                             return result;
                         } else {
                             ftp.changeWorkingDirectory(tempPath);
-                            //单纯是创建目录
-                            if(null == filename){
-                                return true;
-                            }
                         }
                     }
                 }

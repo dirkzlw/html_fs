@@ -30,9 +30,15 @@ public class FsController {
         return "fs/index";
     }
 
+    /**
+     * 上传压缩文件
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/fs/update")
     @ResponseBody
-    public String updateFile(MultipartFile file) throws IOException {
+    public String updateFile(MultipartFile file){
 
         String rtn = fsService.unFile(file);
 

@@ -9,18 +9,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 /**
  * @author Ranger
  * @create 2019-12-15 10:16
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = HtmlFsApplication.class)
 public class RarTest {
-    @Test
-    public void testRar() throws Exception {
+    public static void main(String[] args) throws Exception {
         File outFileDir = new File("d:\\zf\\");
         if (!outFileDir.exists()) {
             boolean isMakDir = outFileDir.mkdirs();

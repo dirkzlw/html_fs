@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -24,29 +23,35 @@ public class UnFileUtils {
      * @param zip
      * @throws IOException
      */
-    public static void unZip(File zip) throws IOException {
+    public static void unZip(File zip,String host,String username,String password,String ftpHome) throws IOException {
         ZipFile zipFile = new ZipFile(zip);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry zipEntry = entries.nextElement();
-            if (zipEntry.isDirectory()) {
-                File f = new File("d:\\zf\\" + zipEntry.getName());
-                if (!f.exists())
-                    f.mkdirs();
-            } else {
-                File f = new File("d:\\zf\\" + zipEntry.getName());
-                if (!f.exists())
-                    f.createNewFile();
-                InputStream is = zipFile.getInputStream(zipEntry);
-                OutputStream os = new FileOutputStream(f);
-                byte[] buf = new byte[2048];
-                int len;
-                while ((len = is.read(buf)) != -1) {
-                    os.write(buf, 0, len);
-                }
-                os.close();
-                is.close();
+            String[] split = zipEntry.getName().split("/");
+            String filePath = "/html";
+            InputStream is = null;
+            String filename = null;
+            int splen = split.length;
+            if (split[split.length - 1].contains(".")) {
+                is = zipFile.getInputStream(zipEntry);
+                filename = split[split.length - 1];
+                splen--;
             }
+            for (int i = 0; i < splen ; i++) {
+                filePath += "/" + split[i];
+            }
+            boolean b = FileUtils.uploadFile(host,
+                    21,
+                    username,
+                    password,
+                    ftpHome,
+                    filePath,
+                    filename,
+                    is);
+            System.out.println("filePath = " + filePath);
+            System.out.println("filename = " + filename);
+            System.out.println("b = " + b);
         }
     }
 
@@ -65,8 +70,12 @@ public class UnFileUtils {
                     dir.mkdirs();
             } else {
                 File out = new File("d:\\zf\\" + fileHeader.getFileNameString());
-                if (!out.exists())
+                if (!out.exists()) {
+                    if (!out.getParentFile().exists()) {
+                        out.getParentFile().mkdirs();
+                    }
                     out.createNewFile();
+                }
                 FileOutputStream os = new FileOutputStream(out);
                 archive.extractFile(fileHeader, os);
                 os.close();
@@ -74,5 +83,4 @@ public class UnFileUtils {
         }
         archive.close();
     }
-
 }

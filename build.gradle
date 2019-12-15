@@ -23,4 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-devtools'
     //rar解压
     implementation 'com.github.junrar:junrar:3.0.0'
+    //commons-net
+    implementation 'commons-net:commons-net:3.6'
+    //jasypt 配置文件加密
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.18'
 }

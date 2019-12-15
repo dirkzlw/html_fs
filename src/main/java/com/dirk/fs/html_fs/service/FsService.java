@@ -9,5 +9,5 @@ import java.io.IOException;
  * @create 2019-12-15 11:45
  */
 public interface FsService {
-    String unFile(MultipartFile file) throws IOException;
+    String unFile(MultipartFile file);
 }
