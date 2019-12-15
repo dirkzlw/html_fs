@@ -1,195 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="no-js">
 <head>
-<meta charset="utf-8" />
-<title>文件夹操作</title>
-<link rel="stylesheet" type="text/css" href="/fs/css/bootstrap.css">
-<link rel="stylesheet" href="/fs/css/fileinput.css" />
-<link rel="stylesheet" href="/fs/css/tooltips.css" />
-<link rel="stylesheet" href="/fs/css/folder.css" />
-<link rel="stylesheet" href="/fs/css/simplepop.min.css" />
-<link rel="stylesheet" href="/fs/css/k-all.css">
-<link rel="stylesheet" href="/fs/css/upload.css">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom File Inputs | Codrops</title>
 
-<script src="/fs/js/jquery.min.js"></script>
-<script src="/fs/js/bootstrap.js"></script>
-<script src="/fs/js/database.js"></script>
-<script src="/fs/js/dblist.js"></script>
-<script src="/fs/js/simplepop.min.js"></script>
-<script src="/fs/js/jquery.contextmenu.r2.js"></script>
-<script src="/fs/js/folder.js"></script>
-<script src="/fs/js/FileUpload.js"></script>
-<script src="/fs/js/jquery.pure.tooltips.js"></script>
+    <!--弹框-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
 
-<script type="text/javascript">
-$(function(){
-	//初始化
-	var id = "1";
-	init(id, 0);
-	$("input").FileInput();
-	textarea_bind();
-});
-</script>
+    <!--可无视-->
+    <link rel="stylesheet" type="text/css" href="/fs/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="/fs/css/demo.css"/>
+
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="/fs/css/component.css"/>
+    <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- remove this if you use Modernizr -->
+    <script>(function (e, t, n) {
+        var r = e.querySelectorAll("html")[0];
+        r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2")
+    })(document, window, 0);</script>
 
 </head>
 <body>
-	<div class="navigation-bar">
-		<div class="forward-backward">
-			<button type="button" class="backward flipy-y btn-xs k-btn btn"
-				title="后退"></button>
-			<button type="button" class="forward btn-xs k-btn btn" title="前进"></button>
-		</div>
-		<button type="button" class="home btn-xs k-btn btn" title="返回根目录"></button>
-		<button type="button" class="gotopre btn-xs k-btn btn" title="返回上级目录"></button>
-		<div class="folder-navigation" id="folder-navigation"></div>
-		<input type="text" class="navigation" id="navigation"
-			style="display: none;">
-	</div>
-	<hr />
-	<div class="alldom" id="all_folder">
-		<ul id="divall"></ul>
-	</div>
-	<hr>
-	<div class="info-bar" id="info-bar"></div>
-	<div style="clear: both;"></div>
+<div class="container">
 
-	<div class="panel k-popup" id="M8610P001" style="width: 450px;">
-		<div class="panel-heading">修改文件名</div>
-		<div class="panel-body">
-			<form class="k-form col2" id="M8610F001">
-				<div class="k-field hide">
-					<label class="k-field-label">id</label> <input type="text"
-						class="form-control k-field-text" name="id" />
-				</div>
-				<div class="k-field hide">
-					<label class="k-field-label">是否是文件夹</label> <input type="text"
-						class="form-control k-field-text" name="is_directory" />
-				</div>
-				<div class="k-field hide">
-					<label class="k-field-label">文件类型</label> <input type="text"
-						class="form-control k-field-text" name="doc_type" />
-				</div>
-				<div class="k-field hide">
-					<label class="k-field-label">父目录</label> <input type="text"
-						class="form-control k-field-text" name="parent_id" />
-				</div>
-				<div class="k-field hide">
-					<label class="k-field-label">描述</label> <input type="text"
-						class="form-control k-field-text" name="description" />
-				</div>
-				<div class="k-field">
-					<label class="k-field-label">新文件名</label> <input type="text"
-						class="form-control k-field-text" name="folder_name"
-						data-max-length="50" />
-				</div>
-			</form>
-		</div>
-		<div class="panel-footer text-center">
-			<button type="button"
-				class="btn btn-success btn-icon icon-submit k-btn btn-sm"
-				data-from="#M8610F001" data-param-handler="update_folder_name"
-				data-descript="修改文件名称">确定</button>
-			<button type="button" class="btn btn-default k-popup-close">取消</button>
-		</div>
-	</div>
+    <div class="content">
+        <div class="box">
+            <input type="file" name="file0" id="file0" class="inputfile inputfile-1"
+                   data-multiple-caption="{count} files selected"
+                   accept=".zip,.rar" multiple/>
+            <label for="file0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                    <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/>
+                </svg>
+                <span>选择压缩文件(zip/rar)</span>
+            </label>
+        </div>
 
-	<!-- 	上传文档 -->
-	<div class="panel k-popup" id="M8610P002" style="width: 900px;">
-		<div class="panel-heading">文档上传</div>
-		<div class="panel-body">
-			<form name="" class="k-form col2" id="M8610F002"
-				action="manageDocUpload.action" enctype="multipart/form-data"
-				method="post" style="overflow-y: scroll;max-height: 400px;max-width:890px;" >
-				<div class="k-field" style="display: none;">
-					<label class="k-field-label">id</label> <input type="text"
-						class="form-control k-field-text" name="id" id="upload_id" />
-				</div>
+        <div>
+            <a href="#" style="font-size: 30px" onclick="updateZipOrRar()">上传</a>
+        </div>
+    </div>
 
-				<div class="k-field">
-					<label class="k-field-label">文件</label> <input type="file" multiple
-						class="form-control" name="need_appendix" id="need_appendix"/>
-				</div>
+</div><!-- /container -->
 
-				<fieldset class="single-fieldset works-fieldset">
-        			<legend class="work-legend">作品信息</legend>
-        			<div>
-        				<label class="my-label">标题:</label>
-        				<input class="my-input" type="text" id="work_title" name="work_title" placeholder="请输入作品标题" maxlength="16"/>
-        			</div>
-        			<div>
-        				<label class="my-textarea-label">描述:</label>
-        				<textarea class="my-textarea" id="work_desc" name="work_desc" placeholder="请输入作品描述" maxlength="100"></textarea>
-        			</div>
-        		</fieldset>
-			</form>
-		</div>
-		<div class="panel-footer text-center">
-			<button type="button"
-				class="btn btn-success btn-icon icon-submit k-btn btn-sm"
-				data-from="#M8610F002" data-param-handler="uploadFile"
-				data-descript="上传文件">提交</button>
-			<button type="button" class="btn btn-default k-popup-close">取消</button>
-		</div>
-	</div>
+<script src="/fs/js/custom-file-input.js"></script>
+<script src="/fs/js/jquery.min.js"></script>
+<script type="text/javascript">
+    function updateZipOrRar() {
+        var file = document.getElementById("file0").files[0];
+        if (typeof(file) == "undefined") {
+            narn("warn", "请选择需要上传的压缩文件！")
+        }else {
+            narn("success", "正在上传，请稍后！")
+            var formData = new FormData();
+            formData.append("file", file)
+            $.ajax({
+                type: "POST",
+                url: "/fs/update",
+                data: formData,
+                dataType: "text", //return dataType: text or json
+                processData: false,
+                contentType: false,
+                success: function (json) {
+                    if ("success" == json) {
+                        narn("success", "上传成功!")
+                    } else if ("fail" == json) {
+                        narn("warn", "上传失败，请检查网络！")
+                    }else if("unfile" == json){
+                        narn("warn", "上传的文件类型不正确！")
+                    }
+                },
+                error: function (json) {
+                    narn("warn", "上传失败，请检查网络！")
+                    return
+                }
+            });
+        }
+    }
 
-	<!-- 下载 -->
-	<div class="panel k-popup" id="M8610P003">
-		<div class="panel-heading" id="title">下载目录/文档</div>
-		<div class="panel-body">
-			<form id="M8610F003" class="k-form col2"
-				action="downloadDocManage2.action" enctype="multipart/form-data"
-				method="POST">
-				<div class="k-field">
-					<label class="k-field-label">目录/文档</label> <input type="text"
-						class="form-control k-field-text" name="folder_name" id="f_name" />
-				</div>
-				<div class="k-field">
-					<label class="k-field-label">父目录ID</label> <input type="text"
-						class="form-control k-field-text" name="parent_id" id="p_id">
-				</div>
-				<div class="k-field">
-					<label class="k-field-label">ID</label> <input type="text"
-						class="form-control k-field-text" name="id" id="_id">
-				</div>
-				<div class="k-field">
-					<label class="k-field-label">是否是目录</label> <input type="text"
-						class="form-control k-field-text" name="is_directory"
-						id="i_directory">
-				</div>
-			</form>
-		</div>
-	</div>
-	<!-- 在空白部分右键的菜单 -->
-	<div class="contextMenu" id="myMenu1">
-		<ul>
-			<li id="newfolder">新文件夹</li>
-			<!-- <li id="paste">黏贴</li> -->
-			<li id="flush">刷新</li>
-			<li id="sort">排序</li>
-			<li id="upload">上传作品</li>
-		</ul>
-	</div>
-	<!-- 在文件夹上右键菜单 -->
-	<div class="contextMenu" id="myMenu2">
-		<ul>
-			<li id="open">打开</li>
-			<!-- <li id="copy">复制</li>
-			<li id="cut">剪切</li>
-			<li id="paste">黏贴</li> -->
-			<li id="rename">重命名</li>
-			<li id="delete">删除</li>
-			<li id="download">打包下载</li>
-		</ul>
-	</div>
-	<!-- 在文件上面右键菜单 -->
-	<div class="contextMenu" id="myMenu3">
-		<ul>
-			<li id="download">下载</li>
-			<!-- <li id="copy">复制</li>
-			<li id="cut">剪切</li> -->
-			<li id="rename">重命名</li>
-			<li id="delete">删除</li>
-		</ul>
-	</div>
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn(type, msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            }, {
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+</script>
 </body>
 </html>
