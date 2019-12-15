@@ -17,21 +17,7 @@ import java.io.InputStream;
  */
 public class FtpTest {
     public static void main(String[] args){
-        try {
-            System.out.println("FtpTest.main");
-            InputStream is = new FileInputStream(new File("d:\\zf\\m.txt"));
-            boolean b = uploadFile("39.107.249.220",
-                    21,
-                    "html_fs",
-                    "html_fs_pwd",
-                    "/home/html_fs",
-                    "/html",
-                    "m.txt",
-                    is);
-            System.out.println("b = " + b);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
@@ -56,7 +42,6 @@ public class FtpTest {
             // 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
             ftp.login(username, password);// 登录
             reply = ftp.getReplyCode();
-            System.out.println("reply = " + reply);
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftp.disconnect();
                 return result;

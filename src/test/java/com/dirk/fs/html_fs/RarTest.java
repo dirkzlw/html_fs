@@ -2,10 +2,6 @@ package com.dirk.fs.html_fs;
 
 import com.github.junrar.Archive;
 import com.github.junrar.rarfile.FileHeader;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.FileInputStream;
