@@ -21,10 +21,12 @@ public class FsServiceImpl implements FsService {
 
     @Autowired
     private StringEncryptor encryptor;
-    @Value("${ftp.host}")
-    private String ftpHost;
     @Value("${ftp.username}")
     private String ftpUsername;
+    @Value("${ftp.host}")
+    private String ftpHost;
+    @Value("${ftp.port}")
+    private Integer ftpPort;
     @Value("${ftp.password}")
     private String ftpPassword;
     @Value("${ftp.home}")
@@ -38,11 +40,11 @@ public class FsServiceImpl implements FsService {
             try {
                 File zipFile = new File(mulFile.getOriginalFilename());
                 FileUtils.inputStreamToFile(mulFile.getInputStream(), zipFile);
-                System.out.println("encryptor.decrypt(ftpHost) = " + encryptor.decrypt(ftpHost));
                 UnFileUtils.unZip(zipFile,
-                        encryptor.decrypt(ftpHost),
-                        encryptor.decrypt(ftpUsername),
-                        encryptor.decrypt(ftpPassword),
+                        ftpHost,
+                        ftpPort,
+                        ftpUsername,
+                        ftpPassword,
                         ftpHome);
             } catch (IOException e) {
                 return "fail";
@@ -50,18 +52,21 @@ public class FsServiceImpl implements FsService {
             return "success";
         } else if ("rar".equals(suf)) {
             //上传的文件类型是rar
-            System.out.println("FsServiceImpl.unFile");
             try {
                 File rarFile = new File(mulFile.getOriginalFilename());
                 FileUtils.inputStreamToFile(mulFile.getInputStream(), rarFile);
-                UnFileUtils.unRar(rarFile);
+                UnFileUtils.unRar(rarFile,
+                        ftpHost,
+                        ftpPort,
+                        ftpUsername,
+                        ftpPassword,
+                        ftpHome);
             } catch (Exception e) {
                 return "fail";
             }
-
+            return "success";
         } else {
             return "unfile";
         }
-        return null;
     }
 }

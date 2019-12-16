@@ -5,7 +5,6 @@ import com.github.junrar.rarfile.FileHeader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -23,26 +22,34 @@ public class UnFileUtils {
      * @param zip
      * @throws IOException
      */
-    public static void unZip(File zip,String host,String username,String password,String ftpHome) throws IOException {
+    public static void unZip(File zip,
+                             String host,
+                             Integer ftpPort,
+                             String username,
+                             String password,
+                             String ftpHome) throws IOException {
         ZipFile zipFile = new ZipFile(zip);
+        String filePath;
+        InputStream is;
+        String filename;
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry zipEntry = entries.nextElement();
+            filePath = "/html";
+            is = null;
+            filename = null;
             String[] split = zipEntry.getName().split("/");
-            String filePath = "/html";
-            InputStream is = null;
-            String filename = null;
             int splen = split.length;
             if (split[split.length - 1].contains(".")) {
                 is = zipFile.getInputStream(zipEntry);
                 filename = split[split.length - 1];
                 splen--;
             }
-            for (int i = 0; i < splen ; i++) {
+            for (int i = 0; i < splen; i++) {
                 filePath += "/" + split[i];
             }
             boolean b = FileUtils.uploadFile(host,
-                    21,
+                    ftpPort,
                     username,
                     password,
                     ftpHome,
@@ -60,26 +67,50 @@ public class UnFileUtils {
      *
      * @param rar
      */
-    public static void unRar(File rar) throws Exception {
+    public static void unRar(File rar,
+                             String host,
+                             Integer ftpPort,
+                             String username,
+                             String password,
+                             String ftpHome) throws Exception {
         Archive archive = new Archive(new FileInputStream(rar));
+        String filePath;
+        InputStream is;
+        String filename;
         FileHeader fileHeader;
         while ((fileHeader = archive.nextFileHeader()) != null) {
+            filePath = "/html";
+            is =null;
+            filename = null;
             if (fileHeader.isDirectory()) {
-                File dir = new File("d:\\zf\\" + fileHeader.getFileNameString());
-                if (dir.isDirectory())
-                    dir.mkdirs();
+                filePath += "/" + fileHeader.getFileNameString().replaceAll("\\\\", "/");
+                FileUtils.uploadFile(host,
+                        ftpPort,
+                        username,
+                        password,
+                        ftpHome,
+                        filePath,
+                        filename,
+                        is);
             } else {
-                File out = new File("d:\\zf\\" + fileHeader.getFileNameString());
-                if (!out.exists()) {
-                    if (!out.getParentFile().exists()) {
-                        out.getParentFile().mkdirs();
-                    }
-                    out.createNewFile();
+
+                String[] split = fileHeader.getFileNameString().replaceAll("\\\\", "/").split("/");
+                for (int i = 0; i < split.length - 1; i++) {
+                    filePath += "/" + split[i];
                 }
-                FileOutputStream os = new FileOutputStream(out);
-                archive.extractFile(fileHeader, os);
-                os.close();
+                filename = split[split.length - 1];
+                is = archive.getInputStream(fileHeader);
+                FileUtils.uploadFile(host,
+                        ftpPort,
+                        username,
+                        password,
+                        ftpHome,
+                        filePath,
+                        filename,
+                        is);
             }
+            System.out.println("filePath = " + filePath);
+            System.out.println("filename = " + filename);
         }
         archive.close();
     }
