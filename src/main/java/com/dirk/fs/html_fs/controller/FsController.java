@@ -22,24 +22,30 @@ public class FsController {
 
     /**
      * 接收 url: / 跳转至主页
+     *
      * @return
      */
     @GetMapping("/")
-    public String toHtmlFs(){
+    public String toHtmlFs() {
         return "fs/index";
     }
 
     /**
      * 上传压缩文件
+     *
      * @param file
      * @return
      * @throws IOException
      */
     @PostMapping("/fs/update")
     @ResponseBody
-    public String updateFile(MultipartFile file){
+    public String updateFile(MultipartFile file) {
 
-        String rtn = fsService.unFile(file);
+        String username = "dirk";
+        String url = null;
+        String rtn = fsService.unFile(file, username, null);
+
+        System.out.println("new String = " + url);
 
         return rtn;
     }

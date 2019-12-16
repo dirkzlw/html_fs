@@ -17,6 +17,13 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //Spring Data Jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //Mysql连接驱动     指定5.1.6版本
+    implementation 'mysql:mysql-connector-java:5.1.6'
+    //druid连接池
+    implementation 'com.alibaba:druid:1.1.10'
+    implementation 'com.alibaba:druid-spring-boot-starter:1.1.10'
     //Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     //DevTools  启动热部署
@@ -27,4 +34,6 @@ dependencies {
     implementation 'commons-net:commons-net:3.6'
     //jasypt 配置文件加密
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.18'
+    //lombok
+    implementation 'org.projectlombok:lombok:1.16.6'
 }

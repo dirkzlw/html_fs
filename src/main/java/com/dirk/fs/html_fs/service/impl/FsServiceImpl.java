@@ -32,20 +32,29 @@ public class FsServiceImpl implements FsService {
     @Value("${ftp.home}")
     private String ftpHome;
 
+    /**
+     * 解压文件并上传至FTP服务器
+     * @param mulFile
+     * @return
+     */
     @Override
-    public String unFile(MultipartFile mulFile) {
+    public String unFile(MultipartFile mulFile,String username,String url) {
         String suf = mulFile.getOriginalFilename().split("\\.")[1];
         if ("zip".equals(suf)) {
             //上传的文件类型是zip
             try {
+                //将MulFile转为File
                 File zipFile = new File(mulFile.getOriginalFilename());
                 FileUtils.inputStreamToFile(mulFile.getInputStream(), zipFile);
+                //解压并上传
                 UnFileUtils.unZip(zipFile,
                         ftpHost,
                         ftpPort,
                         ftpUsername,
                         ftpPassword,
-                        ftpHome);
+                        ftpHome,
+                        username,
+                        url);
             } catch (IOException e) {
                 return "fail";
             }

@@ -20,7 +20,8 @@ public class JasyptTest {
 
     @Test
     public void testJasypt(){
-        System.out.println("加密 = " + encryptor.encrypt("nihao"));
+        System.out.println("加密 = " + encryptor.encrypt("root"));
+        System.out.println("加密 = " + encryptor.encrypt("aliroot"));
         System.out.println("解密 = " + encryptor.decrypt("boGqVtoLsxpmU3hhcHpLYQ=="));
     }
 }

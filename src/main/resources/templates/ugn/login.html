@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Html_FS登录注册</title>
+    <link rel="stylesheet" href="/ugn/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/ugn/css/style.css">
+
+    <!--弹框引入-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
+</head>
+
+<body onkeydown="keyLogin()">
+    <div class="materialContainer">
+        <div class="box">
+            <div class="title">登录</div>
+            <div class="input">
+                <label for="username">用户名</label>
+                <input type="text" name="username" id="username">
+                <span class="spin"></span>
+            </div>
+            <div class="input">
+                <label for="password">密码</label>
+                <input type="password" name="password" id="password">
+                <span class="spin"></span>
+            </div>
+            <div class="button">
+                <button id="keyLogin" onclick="login()">
+                    <span>登录</span>
+                    <!--<i class="fa fa-check"></i>-->
+                </button>
+            </div>
+            <!--<a href="javascript:" class="pass-forgot">忘记密码？</a>-->
+        </div>
+
+        <div class="overbox">
+            <div class="material-button alt-2">
+                <span class="shape"></span>
+            </div>
+            <div class="title">注册</div>
+            <div class="input">
+                <label for="regname">用户名</label>
+                <input type="text" name="regname" id="regname">
+                <span class="spin"></span>
+            </div>
+            <div class="input">
+                <label for="regpass">密码</label>
+                <input type="password" name="regpass" id="regpass">
+                <span class="spin"></span>
+            </div>
+            <div class="input">
+                <label for="regemail">邮箱</label>
+                <input type="text" name="regemail" id="regemail">
+                <span class="spin"></span>
+            </div>
+            <div class="button">
+                <button onclick="register()">
+                    <span>注册</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <script src="/ugn/js/jquery.min.js"></script>
+    <script src="/ugn/js/login.js"></script>
+</body>
+<script type="text/javascript">
+
+    //回车
+    function keyLogin(){
+        if (event.keyCode==13) { //回车键的键值为13
+            var toClick = document.getElementById("keyLogin");
+            toClick.click();  //调用登录按钮的登录事件
+        }
+    }
+
+    // 登录
+    function login() {
+        var username = $('input[name="username"]').val();
+        var password = $('input[name="password"]').val();
+        if (username == '' || password == '') {
+            narn('warn','请完善登录信息！')
+            return false;
+        } else{
+            $.ajax({
+                type: "POST",
+                url: "/ugn/login",
+                data : {'username':username,'password':password},
+                dataType: "text", //return dataType: text or json
+                success: function(json) {
+                    if(json == "success"){
+                        window.location.href = '/';
+                    } else{
+                        narn('warn','登录失败！请检查用户名/密码')
+                    }
+                },
+                error: function(json) {
+                    narn('warn','登录失败！请检查用户名/密码')
+                    return false;
+                }
+            });
+        }
+    }
+    // 注册
+    function register() {
+        var username = $('input[name="regname"]').val();
+        var password = $('input[name="regpass"]').val();
+        var email = $('input[name="regemail"]').val();
+        if (username == '' || password == '' || email == '') {
+            narn('warn','请完善注册信息！')
+            return false;
+        } else{
+            $.ajax({
+                type: "POST",
+                url: "/ugn/register",
+                data : {'username':username,'password':password,'email':email},
+                dataType: "text", //return dataType: text or json
+                success: function(json) {
+                    if(json=="repeat"){
+                        narn('warn','用户名或邮箱已被注册！')
+                    }else if(json == "success"){
+                        narn('success','注册成功，请登录！')
+                    } else{
+                        narn('warn','登录失败！请检查用户名/密码')
+                    }
+                },
+                error: function(json) {
+                    narn('warn','登录失败！请检查用户名/密码')
+                    return false;
+                }
+            });
+        }
+    }
+
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn (type,msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            },{
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+</script>
+</html>

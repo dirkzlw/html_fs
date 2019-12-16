@@ -23,11 +23,13 @@ public class UnFileUtils {
      * @throws IOException
      */
     public static void unZip(File zip,
-                             String host,
+                             String ftpHost,
                              Integer ftpPort,
+                             String ftpUsername,
+                             String ftpPassword,
+                             String ftpHome,
                              String username,
-                             String password,
-                             String ftpHome) throws IOException {
+                             String url) throws IOException {
         ZipFile zipFile = new ZipFile(zip);
         String filePath;
         InputStream is;
@@ -35,7 +37,7 @@ public class UnFileUtils {
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry zipEntry = entries.nextElement();
-            filePath = "/html";
+            filePath = "/html/" + username;
             is = null;
             filename = null;
             String[] split = zipEntry.getName().split("/");
@@ -48,10 +50,14 @@ public class UnFileUtils {
             for (int i = 0; i < splen; i++) {
                 filePath += "/" + split[i];
             }
-            boolean b = FileUtils.uploadFile(host,
+            if ("index.html".equals(filename) || "index.htm".equals(filename)) {
+                url =new String("zlwmyy.xyz"+ filePath.replaceAll("/html", ""));
+                System.out.println("url = " + url);
+            }
+            boolean b = FileUtils.uploadFile(ftpHost,
                     ftpPort,
-                    username,
-                    password,
+                    ftpUsername,
+                    ftpPassword,
                     ftpHome,
                     filePath,
                     filename,
@@ -80,7 +86,7 @@ public class UnFileUtils {
         FileHeader fileHeader;
         while ((fileHeader = archive.nextFileHeader()) != null) {
             filePath = "/html";
-            is =null;
+            is = null;
             filename = null;
             if (fileHeader.isDirectory()) {
                 filePath += "/" + fileHeader.getFileNameString().replaceAll("\\\\", "/");
