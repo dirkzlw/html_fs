@@ -10,4 +10,6 @@ public interface UserService {
     String register(User user);
 
     String login(String username, String password);
+
+    User findUserByUsername(String username);
 }

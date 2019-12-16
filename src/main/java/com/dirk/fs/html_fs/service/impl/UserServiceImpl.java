@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * 注册
+     * @param user
+     * @return
+     */
     @Override
     public String register(User user) {
         User user2 = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
@@ -31,11 +36,27 @@ public class UserServiceImpl implements UserService {
         return "success";
     }
 
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public String login(String username, String password) {
         User user = userRepository.findByUsernameAndPassword(username, MD5Utils.md5(password));
         if(null!=user)
             return "success";
         return "fail";
+    }
+
+    /**
+     * 根据用户名查找用户
+     * @param username
+     * @return
+     */
+    @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

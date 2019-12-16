@@ -22,14 +22,15 @@ public class UnFileUtils {
      * @param zip
      * @throws IOException
      */
-    public static void unZip(File zip,
-                             String ftpHost,
-                             Integer ftpPort,
-                             String ftpUsername,
-                             String ftpPassword,
-                             String ftpHome,
-                             String username,
-                             String url) throws IOException {
+    public static String unZip(File zip,
+                               String ftpHost,
+                               Integer ftpPort,
+                               Integer nginxPort,
+                               String ftpUsername,
+                               String ftpPassword,
+                               String ftpHome,
+                               String username) throws IOException {
+        String url = null;
         ZipFile zipFile = new ZipFile(zip);
         String filePath;
         InputStream is;
@@ -37,7 +38,7 @@ public class UnFileUtils {
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry zipEntry = entries.nextElement();
-            filePath = "/html/" + username;
+            filePath = "/" + username;
             is = null;
             filename = null;
             String[] split = zipEntry.getName().split("/");
@@ -51,7 +52,7 @@ public class UnFileUtils {
                 filePath += "/" + split[i];
             }
             if ("index.html".equals(filename) || "index.htm".equals(filename)) {
-                url =new String("zlwmyy.xyz"+ filePath.replaceAll("/html", ""));
+                url = new String(ftpHost + ":" + nginxPort + filePath);
                 System.out.println("url = " + url);
             }
             boolean b = FileUtils.uploadFile(ftpHost,
@@ -66,6 +67,8 @@ public class UnFileUtils {
             System.out.println("filename = " + filename);
             System.out.println("b = " + b);
         }
+
+        return url;
     }
 
     /**
@@ -73,27 +76,30 @@ public class UnFileUtils {
      *
      * @param rar
      */
-    public static void unRar(File rar,
-                             String host,
-                             Integer ftpPort,
-                             String username,
-                             String password,
-                             String ftpHome) throws Exception {
+    public static String unRar(File rar,
+                               String ftpHost,
+                               Integer ftpPort,
+                               Integer nginxPort,
+                               String ftpUsername,
+                               String ftpPassword,
+                               String ftpHome,
+                               String username) throws Exception {
         Archive archive = new Archive(new FileInputStream(rar));
+        String url = null;
         String filePath;
         InputStream is;
         String filename;
         FileHeader fileHeader;
         while ((fileHeader = archive.nextFileHeader()) != null) {
-            filePath = "/html";
+            filePath = "/" + username;
             is = null;
             filename = null;
             if (fileHeader.isDirectory()) {
                 filePath += "/" + fileHeader.getFileNameString().replaceAll("\\\\", "/");
-                FileUtils.uploadFile(host,
+                FileUtils.uploadFile(ftpHost,
                         ftpPort,
-                        username,
-                        password,
+                        ftpUsername,
+                        ftpPassword,
                         ftpHome,
                         filePath,
                         filename,
@@ -106,18 +112,24 @@ public class UnFileUtils {
                 }
                 filename = split[split.length - 1];
                 is = archive.getInputStream(fileHeader);
-                FileUtils.uploadFile(host,
+                boolean b = FileUtils.uploadFile(ftpHost,
                         ftpPort,
-                        username,
-                        password,
+                        ftpUsername,
+                        ftpPassword,
                         ftpHome,
                         filePath,
                         filename,
                         is);
+                if ("index.html".equals(filename) || "index.htm".equals(filename)) {
+                    url = new String(ftpHost + ":" + nginxPort + filePath);
+                    System.out.println("url = " + url);
+                }
+                System.out.println("filePath = " + filePath);
+                System.out.println("filename = " + filename);
+                System.out.println("b = " + b);
             }
-            System.out.println("filePath = " + filePath);
-            System.out.println("filename = " + filename);
         }
         archive.close();
+        return url;
     }
 }

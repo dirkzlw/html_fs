@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
  * @create 2019-12-15 11:45
  */
 public interface FsService {
-    String unFile(MultipartFile file,String username,String url);
+    String unFile(MultipartFile file,String username);
 }

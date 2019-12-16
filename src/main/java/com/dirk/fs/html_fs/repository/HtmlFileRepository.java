@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @create 2019-12-16 11:53
  */
 public interface HtmlFileRepository extends JpaRepository<HtmlFile,Integer> {
+    HtmlFile findByUrl(String url);
 }

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en" class="no-js"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,6 +30,7 @@
 
 </head>
 <body>
+<div style="height: 80px"></div>
 <div class="container">
 
     <div class="content">
@@ -43,8 +46,11 @@
             </label>
         </div>
 
-        <div>
-            <a href="#" style="font-size: 30px" onclick="updateZipOrRar()">上传</a>
+        <div style="height: 20px">
+            <a th:href="@{/}" style="font-size: 30px;float: left">返回</a>
+            <a href="#" style="font-size: 30px;float: right" onclick="updateZipOrRar()">上传</a>
+            <br>
+            <p style="font-size: 15px">注意：如有文件上传替换，建议先删除旧文件，再上传新文件，避免链接服务器超时！</p>
         </div>
     </div>
 

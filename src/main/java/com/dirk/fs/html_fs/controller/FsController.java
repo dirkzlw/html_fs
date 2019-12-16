@@ -1,6 +1,7 @@
 package com.dirk.fs.html_fs.controller;
 
 import com.dirk.fs.html_fs.service.FsService;
+import com.dirk.fs.html_fs.vo.SessionUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -21,13 +23,13 @@ public class FsController {
     private FsService fsService;
 
     /**
-     * 接收 url: / 跳转至主页
+     * 接收 url: / 跳转至上传页
      *
      * @return
      */
-    @GetMapping("/")
+    @GetMapping("/to/upload")
     public String toHtmlFs() {
-        return "fs/index";
+        return "fs/upload";
     }
 
     /**
@@ -39,13 +41,11 @@ public class FsController {
      */
     @PostMapping("/fs/update")
     @ResponseBody
-    public String updateFile(MultipartFile file) {
+    public String updateFile(MultipartFile file,
+                             HttpServletRequest request) {
 
-        String username = "dirk";
-        String url = null;
-        String rtn = fsService.unFile(file, username, null);
-
-        System.out.println("new String = " + url);
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
+        String rtn = fsService.unFile(file, sessionUser.getUsername());
 
         return rtn;
     }

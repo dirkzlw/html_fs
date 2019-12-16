@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Html_FS--主页</title>
+
+    <link href="/index/css/move.css" type="text/css" rel="stylesheet"/>
+
+    <!--弹框引入-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
+
+    <style type="text/css">
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div align="right" style="font-size: 20px" th:if="${session.sessionUser}==null">
+    <br/>
+    <a th:href="@{/login}">登录</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<div align="right" style="font-size: 20px" th:if="${session.sessionUser}!=null">
+    <br/>
+    欢迎您：<span th:text="${session.sessionUser.username}"></span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+
+<ul class="list">
+    <li>
+        <div class="border"></div>
+        <span class="icon">Z</span>
+        <div class="text">
+            <h2><a th:href="@{/logout}">退出登录</a></h2>
+            <h3>logout</h3>
+        </div>
+    </li>
+    <li>
+        <div class="border"></div>
+        <span class="icon">S</span>
+        <div class="text">
+            <h2><a th:href="@{/to/upload}">上传文件</a></h2>
+            <h3>upload files</h3>
+        </div>
+    </li>
+    <li>
+        <div class="border"></div>
+        <span class="icon">N</span>
+        <div class="text">
+            <h2><a th:href="@{/query/classes}" onclick="queryIng()">上传列表</a></h2>
+            <h3>upload list</h3>
+        </div>
+    </li>
+</ul>
+
+</body>
+<script type="text/javascript">
+
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn(type, msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            }, {
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+</script>
+</html>

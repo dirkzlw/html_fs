@@ -35,4 +35,12 @@ public class HtmlFile {
     @ManyToOne
     @JoinColumn(name="userId")
     private User user;
+
+    public HtmlFile() {}
+
+    public HtmlFile(String url, String createTime, User user) {
+        this.url = url;
+        this.createTime = createTime;
+        this.user = user;
+    }
 }
